@@ -37,25 +37,33 @@ def Gauss (A, b):
 
 def AproksymacjaNStopnia (tablicaX, tablicaY, N):
 	#metoda 2-go stopnia ma mieć 3 rzędy i 3 kolumny, itd.
-	A=np.empty([N+1,N+1])
-	b=np.empty([N+1])
+	A = np.empty([N+1,N+1])
+	b = np.empty([N+1])
 	#wypełnianie macierzy od tyłu (od najmniejszych potęg x do najwyższych)
 	for i in range (N+1):
-		k=i
-		b[-i-1]=np.sum((tablicaX**k)*tablicaY)
+		k = i
+		b[-i-1] = np.sum((tablicaX**k)*tablicaY)
 		for j in range (N+1):
 			A[-i-1][-j-1] = np.sum(tablicaX**k)
-			k=k+1
-	#A=([np.sum(tablicaX**2),np.sum(tablicaX)],[np.sum(tablicaX),len(tablicaX)])
-	#b=([np.sum(tablicaX*tablicaY), np.sum(tablicaY)])
+			k = k+1
+	#A = ([np.sum(tablicaX**2),np.sum(tablicaX)], [np.sum(tablicaX),len(tablicaX)])
+	#b = ([np.sum(tablicaX*tablicaY), np.sum(tablicaY)])
 	return (Gauss(A,b))
 
 def InterpolacjaNewtona (tablicaX, tablicaY):
-	stopien=len(tablicaX)-1
+	dl=len(tablicaX)
+	A = np.empty ([dl,dl])
+	for i in range (dl):
+		A[i][0] = tablicaY[i]
+	for i in range (1, dl):
+		for j in range (dl):
+			A[i][j]
 
 print ('Dane wejściowe:')
 for i in range(len(tablicaX)):
 	print (string.ascii_uppercase[i],': (',tablicaX[i],',',tablicaY[i],')')
+
+#InterpolacjaNewtona (tablicaX, tablicaY)
 
 #współczynniki wielomianu
 wspolczynnikiWielomianu = P.polyfit(tablicaX,tablicaY, len(tablicaX)-1)
