@@ -12,30 +12,30 @@ def Gauss (A, b):
 	n = len(A)
 	for i in range(n-1):
 		#szukamy mocnych przekątnych
-		pivot_row = i
+		wiersz = i
 		for j in range(i+1, n):
-			if abs(A[j][i]) > abs(A[pivot_row][i]):
-				pivot_row = j
+			if abs(A[j][i]) > abs(A[wiersz][i]):
+				wiersz = j
 		#zamianka
-		if pivot_row != i:
-			A[i], A[pivot_row] = A[pivot_row], A[i]
-			b[i], b[pivot_row] = b[pivot_row], b[i]
+		if wiersz != i:
+			b[i], b[wiersz] = b[wiersz], b[i]
+			A[i], A[wiersz] = A[wiersz], A[i]
 		#tango down! Eliminujemy dolny trójkącik
 		for j in range(i+1, n):
-			factor = A[j][i] / A[i][i]
+			mnoznik = A[j][i] / A[i][i]
 			for k in range(i+1, n):
-				A[j][k] -= factor * A[i][k]
-			b[j] -= factor * b[i]
+				A[j][k] = A[j][k] - mnoznik * A[i][k]
+			b[j] = b[j] - mnoznik * b[i]
 	#rozwiązywańsko w górę
 	x = [0] * n
 	for i in range(n-1, -1, -1):
 		x[i] = b[i]
 		for j in range(i+1, n):
-			x[i] -= A[i][j] * x[j]
-		x[i] /= A[i][i]
+			x[i] = x[i] - A[i][j] * x[j]
+		x[i] = x[i] / A[i][i]
 	return np.flip(x)
 
-def MetodaNStopnia (tablicaX, tablicaY, N):
+def AproksymacjaNStopnia (tablicaX, tablicaY, N):
 	#metoda 2-go stopnia ma mieć 3 rzędy i 3 kolumny, itd.
 	A=np.empty([N+1,N+1])
 	b=np.empty([N+1])
@@ -49,6 +49,9 @@ def MetodaNStopnia (tablicaX, tablicaY, N):
 	#A=([np.sum(tablicaX**2),np.sum(tablicaX)],[np.sum(tablicaX),len(tablicaX)])
 	#b=([np.sum(tablicaX*tablicaY), np.sum(tablicaY)])
 	return (Gauss(A,b))
+
+def InterpolacjaNewtona (tablicaX, tablicaY):
+	stopien=len(tablicaX)-1
 
 print ('Dane wejściowe:')
 for i in range(len(tablicaX)):
@@ -66,19 +69,18 @@ print (np.polynomial.Polynomial(np.round(wspolczynnikiWielomianu,decimals=3)))
 
 N=3
 print ('Wielomian aproksymujący ',N,'-go stopnia:')
-aproksymacja = MetodaNStopnia(tablicaX, tablicaY, N)
-print(np.polynomial.Polynomial(np.round(aproksymacja,decimals=3)))
+print(np.polynomial.Polynomial(np.round(AproksymacjaNStopnia(tablicaX, tablicaY, N),decimals=3)))
 
 N=2
 print ('Wielomian aproksymujący ',N,'-go stopnia:')
-aproksymacja = MetodaNStopnia(tablicaX, tablicaY, N)
-print(np.polynomial.Polynomial(np.round(aproksymacja,decimals=3)))
+print(np.polynomial.Polynomial(np.round(AproksymacjaNStopnia(tablicaX, tablicaY, N),decimals=3)))
 
 N=1
 print ('Wielomian aproksymujący ',N,'-go stopnia:')
-aproksymacja = MetodaNStopnia(tablicaX, tablicaY, N)
-print(np.polynomial.Polynomial(np.round(aproksymacja,decimals=3)))
+print(np.polynomial.Polynomial(np.round(AproksymacjaNStopnia(tablicaX, tablicaY, N),decimals=3)))
 
+N=2
+aproksymacja = AproksymacjaNStopnia(tablicaX, tablicaY, N)
 x=np.arange (tablicaX[0], tablicaX[-1]+0.01, 0.01)
 
 #konfiguracja diagramu
