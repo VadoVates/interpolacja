@@ -1,3 +1,6 @@
+#Autor: Marek Górski, nr indeksu 155647, grupa D1, semestr II, kierunek informatyka
+#Wydział Informatyki, Zarządzania i Transportu, rok akademicki 2022/2023
+
 import string
 import numpy as np
 from matplotlib import pyplot as diagram
@@ -71,6 +74,13 @@ def InterpolacjaNewtona (tablicaX, tablicaY):
 	ilorazy = A[0]
 	return (ilorazy)
 
+def Ekstrapolacja (wspolczynnikiWielomianu, punktx):
+	dl = len(wspolczynnikiWielomianu)
+	wynik = 0
+	for i in range (dl):
+		wynik = wynik + punktx**i * wspolczynnikiWielomianu[i]
+	return wynik
+
 print ('Dane wejściowe:')
 for i in range(len(tablicaX)):
 	print (string.ascii_uppercase[i],': (',tablicaX[i],',',tablicaY[i],')')
@@ -103,6 +113,10 @@ print(np.polynomial.Polynomial(np.round(AproksymacjaNStopnia(tablicaX, tablicaY,
 
 N=2
 aproksymacja = AproksymacjaNStopnia(tablicaX, tablicaY, N)
+
+#EKSTRAPOLACJA
+punktx = -2
+print ('Ekstrapolacja dla punktu: ', punktx, ' wynosi: ',np.round(Ekstrapolacja(wspolczynnikiWielomianu, punktx),decimals=3))
 
 #konfiguracja diagramu
 diagram.grid(linestyle='--') #styl siatki w tle
