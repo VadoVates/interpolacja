@@ -4,7 +4,7 @@
 import string
 import numpy as np
 from matplotlib import pyplot as diagram
-from numpy.polynomial import polynomial as P
+
 
 #dane wejściowe
 tablicaX = np.array ([-1, 0, 1, 2])
@@ -49,8 +49,6 @@ def AproksymacjaNStopnia (tablicaX, tablicaY, N):
 		for j in range (N+1):
 			A[-i-1][-j-1] = np.sum(tablicaX**k)
 			k = k+1
-	#A = ([np.sum(tablicaX**2),np.sum(tablicaX)], [np.sum(tablicaX),len(tablicaX)])
-	#b = ([np.sum(tablicaX*tablicaY), np.sum(tablicaY)])
 	return (Gauss(A,b))
 
 def AlgorytmHornera (ilorazy, tablicaX, x):
@@ -70,7 +68,6 @@ def InterpolacjaNewtona (tablicaX, tablicaY):
 		k=dl-i
 		for j in range (k):
 			A[j][i] = (A[j+1][i-1] - A[j][i-1]) / (tablicaX[i+j] - tablicaX[j])
-			#print (A)
 	ilorazy = A[0]
 	return (ilorazy)
 
@@ -95,10 +92,6 @@ y=AlgorytmHornera(ilorazy, tablicaX, x)
 N=3
 wspolczynnikiWielomianu = AproksymacjaNStopnia(tablicaX, tablicaY, N)
 
-#wspolczynnikiWielomianu = P.polyfit(tablicaX,tablicaY, len(tablicaX)-1)
-#aproksymacja1 = P.polyfit(tablicaX,tablicaY, 1) #te biblioteki robią za ciebie wszystko
-#aproksymacja2 = P.polyfit(tablicaX,tablicaY, 2) #naprawdę wszystko
-
 #wyświetlanie współczynników
 print ('Wielomian interpolujący:')
 print (np.polynomial.Polynomial(np.round(wspolczynnikiWielomianu,decimals=3)))
@@ -115,7 +108,7 @@ N=2
 aproksymacja = AproksymacjaNStopnia(tablicaX, tablicaY, N)
 
 #EKSTRAPOLACJA
-punktx = -2
+punktx = -3
 print ('Ekstrapolacja dla punktu: ', punktx, ' wynosi: ',np.round(Ekstrapolacja(wspolczynnikiWielomianu, punktx),decimals=3))
 
 #konfiguracja diagramu
@@ -124,6 +117,6 @@ diagram.title ('Wielomian interpolacji Newtona') #tytuł
 diagram.gca().set_aspect('equal') #zachowanie proporcji na osiach XY
 diagram.plot(tablicaX, tablicaY,'r.',label='punkty wejściowe') #punkty, kolor czerwony, użycie kropki
 diagram.plot(x, y, 'g', label='wielomian interpolacji')
-diagram.plot(x, P.polyval(x, aproksymacja), 'b', label='wielomian aproksymujący')
+diagram.plot(x, Ekstrapolacja(aproksymacja,x), 'b', label='wielomian aproksymujący')
 diagram.legend(loc='upper left') #legenda w lewym górnym rogu
 diagram.show()
