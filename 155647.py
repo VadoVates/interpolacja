@@ -1,5 +1,3 @@
-#Autor: Marek Górski, nr indeksu 155647, grupa D1, semestr II, kierunek informatyka
-#Wydział Informatyki, Zarządzania i Transportu, rok akademicki 2022/2023
 
 import string
 import numpy as np
